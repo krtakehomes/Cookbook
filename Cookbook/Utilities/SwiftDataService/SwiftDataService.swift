@@ -24,9 +24,8 @@ class SwiftDataService {
     
     func create<T>(_ model: T) throws where T: PersistentModel, T: UniqueModel {
         let allModels = try modelContext.fetch(FetchDescriptor<T>())
-            .filter { $0.modelIdentifier == model.modelIdentifier}
         
-        guard allModels.isEmpty else {
+        guard !allModels.contains(where: { $0.modelIdentifier == model.modelIdentifier }) else {
             return
         }
         
@@ -38,8 +37,8 @@ class SwiftDataService {
         try readAll(T.self).first(where: { $0.modelIdentifier == identifier })
     }
     
-    func readAll<T>(_ model: T.Type) throws -> [T] where T: PersistentModel {
-        try modelContext.fetch(FetchDescriptor<T>())
+    func readAll<T>(_ model: T.Type) throws -> [T] where T: PersistentModel, T: UniqueModel {
+        try Array(Set(modelContext.fetch(FetchDescriptor<T>())))
     }
     
     func delete<T>(_ modelType: T.Type, withIdentifier identifier: String) throws where T: PersistentModel, T: UniqueModel {

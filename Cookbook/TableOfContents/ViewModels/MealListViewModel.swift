@@ -29,7 +29,7 @@ class MealListViewModel: ObservableObject {
             cacheMeals(meals)
         } catch {
             print(error)
-            meals = fetchCachedMeals(by: category)
+            meals = fetchCachedMeals(by: category).sorted(by: { $0.name < $1.name })
             showNoNetworkMessage = meals.isEmpty
         }
     }

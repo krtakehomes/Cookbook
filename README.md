@@ -28,3 +28,7 @@ This app follows the MVVM pattern to ensure clear separation of concerns and tes
 ## Future Enhancements
 - Implement unit and UI tests, particularly for networking and view model logic.
 - Add recipe search functionality to improve user experience.
+
+## Demo
+https://github.com/user-attachments/assets/488c42b3-6d54-4013-97a3-a6bd6762aa23
+

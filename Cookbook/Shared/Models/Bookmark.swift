@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Bookmark: UniqueModel {
+class Bookmark: UniqueModel {
     let mealID: String
     
     var modelIdentifier: String {

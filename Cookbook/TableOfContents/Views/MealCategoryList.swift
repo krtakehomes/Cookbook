@@ -16,7 +16,7 @@ struct MealCategoryList: View {
             ForEach(viewModel.categories.keys.sorted(by: { $0 < $1 }), id: \.self) { firstLetter in
                 if let categories = viewModel.categories[firstLetter] {
                     Section(header: Text(firstLetter)) {
-                        ForEach(categories) { category in
+                        ForEach(categories.sorted(by: { $0.name < $1.name })) { category in
                             NavigationLink(value: category, label: {
                                 Text(category.name)
                             })

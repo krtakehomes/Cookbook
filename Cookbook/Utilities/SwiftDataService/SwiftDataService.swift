@@ -38,7 +38,8 @@ class SwiftDataService {
     }
     
     func readAll<T>(_ model: T.Type) throws -> [T] where T: PersistentModel, T: UniqueModel {
-        try Array(Set(modelContext.fetch(FetchDescriptor<T>())))
+        let allModels = try Array(Set(modelContext.fetch(FetchDescriptor<T>())))
+        return Dictionary(grouping: allModels, by: { $0.modelIdentifier }).compactMap { $0.value.first }
     }
     
     func delete<T>(_ modelType: T.Type, withIdentifier identifier: String) throws where T: PersistentModel, T: UniqueModel {

@@ -37,6 +37,11 @@ class MealDetailViewModel: ObservableObject {
     }
     
     @MainActor func fetchMealDetail() async {
+        if let cachedMealDetail = fetchCachedMealDetail() {
+            mealDetail = cachedMealDetail
+            return
+        }
+        
         do {
             let response: MealByIDResponse = try await httpClient.request(MealDBRequest.mealByID(mealID: meal.id))
             
@@ -53,13 +58,12 @@ class MealDetailViewModel: ObservableObject {
                                            ingredients: zip(responseMeal.ingredients, responseMeal.measurements)
                                                             .map { MealIngredient(name: $0.0, measurement: $0.1) }
                                                             .filter { !$0.name.isEmpty && !$0.measurement.isEmpty })
-            showNoNetworkAlert = false
+            
             mealDetail = newMealDetail
             cacheMealDetail(newMealDetail)
         } catch {
             print(error)
-            mealDetail = fetchCachedMealDetail()
-            showNoNetworkAlert = mealDetail == nil
+            showNoNetworkAlert = true
         }
     }
     
